@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Perfil do Usuário</title>
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Perfil do Usuário</h2>
+
+    <div id="perfil-info">
+      <p><strong>Nome:</strong> <span id="nome"></span></p>
+      <p><strong>Idade:</strong> <span id="idade"></span></p>
+      <p><strong>Rua:</strong> <span id="rua"></span></p>
+      <p><strong>Bairro:</strong> <span id="bairro"></span></p>
+      <p><strong>Estado:</strong> <span id="estado"></span></p>
+      <p><strong>Biografia:</strong> <span id="biografia"></span></p>
+      <p><strong>CPF:</strong> <span id="cpf"></span></p>
+      <div id="imagem-container" style="margin-top: 20px;">
+        <img id="imagem" src="" alt="Imagem de perfil" style="max-width: 150px; border-radius: 10px;" />
+      </div>
+    </div>
+
+    <button class="btn" id="logout-btn" style="margin-top: 30px;">Sair</button>
+  </div>
+
+  <script>
+    // Pega os dados do usuário do sessionStorage
+    const usuario = JSON.parse(sessionStorage.getItem('usuario'));
+
+    if (!usuario) {
+      // Se não estiver logado, volta para login
+      window.location.href = 'home.html';
+    } else {
+      // Preenche os campos com os dados
+      document.getElementById('nome').textContent = usuario.nome || '';
+      document.getElementById('idade').textContent = usuario.idade || '';
+      document.getElementById('rua').textContent = usuario.rua || '';
+      document.getElementById('bairro').textContent = usuario.bairro || '';
+      document.getElementById('estado').textContent = usuario.estado || '';
+      document.getElementById('biografia').textContent = usuario.biografia || '';
+      document.getElementById('cpf').textContent = usuario.cpf || '';
+
+      // Se existir imagem, mostra, senão esconde o container
+      if (usuario.imagem_perfil) {
+        // Ajuste o caminho da imagem conforme onde ela está armazenada no backend
+        document.getElementById('imagem').src = `http://localhost:3000/uploads/${usuario.imagem_perfil}`;
+        document.getElementById('imagem-container').style.display = 'block';
+      } else {
+        document.getElementById('imagem-container').style.display = 'none';
+      }
+    }
+
+    // Botão logout limpa a sessão e volta para login
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      sessionStorage.removeItem('usuario');
+      window.location.href = 'home.html';
+    });
+  </script>
+</body>
+</html>
